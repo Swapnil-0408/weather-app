@@ -1,5 +1,7 @@
 const iconBox = document.querySelector(".iconbox");
 const tempBox = document.querySelector(".tempbox");
+const locationBtn = document.querySelector("#locationBtn");
+console.log(locationBtn);
 const extraDetails = document.querySelector(".extradetails");
 const startBtn=document.querySelector(".start");
 const search=document.querySelector("#inputfield");
@@ -66,6 +68,64 @@ finally{
     searchIcon.addEventListener("click",()=>{
     getWeatherData(search.value);
 });
+async function getWeatherByLocation(lat, lon) {
+
+    loader.classList.remove("inactive");
+    iconBox.classList.add("inactive");
+    tempBox.classList.add("inactive");
+    extraDetails.classList.add("inactive");
+
+    const finalurl = `${url}lat=${lat}&lon=${lon}&appid=${apikey}`;
+
+    try {
+
+        const response = await fetch(finalurl);
+        const weatherData = await response.json();
+
+        desc.innerHTML = weatherData.weather[0].description;
+        temp.innerHTML = Math.round(weatherData.main.temp - 273.15) + "°C";
+        cityName.innerHTML = weatherData.name;
+        wind.innerHTML = weatherData.wind.speed + " km/h";
+        humidity.innerHTML = weatherData.main.humidity + "%";
+
+        let weatherMain = weatherData.weather[0].main;
+
+        const weatherImages = {
+            Clouds: "images/clouds.png",
+            Clear: "images/clear.png",
+            Rain: "images/rain.png",
+            Drizzle: "images/drizzle.png",
+            Snow: "images/snow.png",
+            Thunderstorm: "images/rain.png",
+            Mist: "images/mist.png",
+            Haze: "images/mist.png",
+            Fog: "images/mist.png"
+        };
+
+        icon.src = weatherImages[weatherMain] || "images/clear.png";
+
+        iconBox.classList.remove("inactive");
+        tempBox.classList.remove("inactive");
+        extraDetails.classList.remove("inactive");
+
+    } catch (error) {
+        console.error(error);
+        alert("Something went wrong.");
+    } finally {
+        loader.classList.add("inactive");
+    }
+}
+function success(position){
+  const latitude=position.coords.latitude;
+  const longitude=position.coords.longitude;
+  console.log("latitude:",latitude);
+  console.log("longitude:",longitude);
+  getWeatherByLocation(latitude, longitude);
+}
+function error()
+{
+  alert("location access denied.");
+}
 startBtn.addEventListener("click",()=>{
     mainBox1.classList.add("inactive");
     mainBox2.classList.remove("inactive");
@@ -79,4 +139,14 @@ goHome.addEventListener("click", () => {
   mainBox3.classList.add("inactive");
   mainBox1.classList.remove("inactive");
   search.value = ""; // clear input
+});
+locationBtn.addEventListener("click", () => {
+    console.log("Button clicked");
+
+    if (!navigator.geolocation) {
+        console.log("Geolocation is not supported");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(success, error);
 });
