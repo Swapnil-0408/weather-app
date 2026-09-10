@@ -18,9 +18,51 @@ const loader=document.querySelector("#loader");
 const mainBox1=document.querySelector(".mainBox1");
 const mainBox2=document.querySelector(".mainBox2");
 const mainBox3=document.querySelector(".mainBox3");
+const feelsLike = document.querySelector("#feelsLike");
+const sunrise = document.querySelector("#sunrise");
+const sunset = document.querySelector("#sunset");
+const additionalDetails = document.querySelector(".additionalDetails");
+const forecast = document.querySelector(".forecast");
+additionalDetails.classList.add("inactive");
+forecast.classList.add("inactive");
+const weatherImages = {
+    Clouds: "images/clouds.png",
+    Clear: "images/clear.png",
+    Rain: "images/rain.png",
+    Drizzle: "images/drizzle.png",
+    Snow: "images/snow.png",
+    Thunderstorm: "images/rain.png",
+    Mist: "images/mist.png",
+    Haze: "images/mist.png",
+    Fog: "images/mist.png"
+};
 const url =  "https://api.openweathermap.org/data/2.5/weather?";
 const forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?";
 const apikey = "0ead3ca1215aad52a6ffdb85d6a96fb7";
+function updateWeatherUI(weatherData) {
+    temp.textContent = Math.round(weatherData.main.temp - 273.15) + "°C";
+    desc.textContent = weatherData.weather[0].description;
+    cityName.textContent = weatherData.name;
+    wind.textContent = weatherData.wind.speed + " km/h";
+    humidity.textContent = weatherData.main.humidity + "%";
+    feelsLike.textContent =
+        Math.round(weatherData.main.feels_like - 273.15) + "°C";
+    sunrise.textContent =
+        new Date(weatherData.sys.sunrise * 1000)
+        .toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    sunset.textContent =
+        new Date(weatherData.sys.sunset * 1000)
+        .toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    icon.src =
+        weatherImages[weatherData.weather[0].main] ||
+        "images/clear.png";
+}
 async function getWeatherData(city){
   loader.classList.remove("inactive");
   iconBox.classList.add("inactive");
@@ -30,39 +72,22 @@ async function getWeatherData(city){
   try{
   const response=await fetch(finalurl)
   const weatherData=await response.json();
-  console.log(weatherData);
   if(weatherData.cod===404){
     mainBox2.classList.add("inactive");
     mainBox3.classList.remove("inactive");
   }else{
-    desc.innerHTML=weatherData.weather[0].description;
-    temp.innerHTML=Math.round(weatherData.main.temp-273.15)+"°C";
-    cityName.innerHTML=weatherData.name;
-    wind.innerHTML=weatherData.wind.speed+ " km/h";
-    humidity.innerHTML=weatherData.main.humidity+"%"; 
-  let weatherMain = weatherData.weather[0].main;
-
-const weatherImages = {
-  Clouds: "images/clouds.png",
-  Clear: "images/clear.png",
-  Rain: "images/rain.png",
-  Drizzle: "images/drizzle.png",
-  Snow: "images/snow.png",
-  Thunderstorm: "images/rain.png",
-  Mist: "images/mist.png",
-  Haze: "images/mist.png",
-  Fog: "images/mist.png"
-};
-icon.src = weatherImages[weatherMain] || "images/clear.png";
+    updateWeatherUI(weatherData);
 getForecast(city);
+additionalDetails.classList.remove("inactive");
+forecast.classList.remove("inactive");
 iconBox.classList.remove("inactive");
 tempBox.classList.remove("inactive");
 extraDetails.classList.remove("inactive");
   }
 } 
 catch(error){
-     console.error(error);
-     alert("something went wrong.please check your internet connection.");
+     console.error("error:",error);
+     alert("error.message");
 }
 finally{
   loader.classList.add("inactive");
@@ -81,17 +106,6 @@ async function getForecast(city) {
       const forecastData=await response.json();
       console.log(forecastData);
       forecastcards.innerHTML="";
-      const weatherImages = {
-            Clouds: "images/clouds.png",
-            Clear: "images/clear.png",
-            Rain: "images/rain.png",
-            Drizzle: "images/drizzle.png",
-            Snow: "images/snow.png",
-            Thunderstorm: "images/rain.png",
-            Mist: "images/mist.png",
-            Haze: "images/mist.png",
-            Fog: "images/mist.png"
-        };
       forecastData.list.forEach((item, index) => {
 
     if(item.dt_txt.includes("12:00:00")){
@@ -132,29 +146,10 @@ async function getWeatherByLocation(lat, lon) {
 
         const response = await fetch(finalurl);
         const weatherData = await response.json();
-
-        desc.innerHTML = weatherData.weather[0].description;
-        temp.innerHTML = Math.round(weatherData.main.temp - 273.15) + "°C";
-        cityName.innerHTML = weatherData.name;
+        updateWeatherUI(weatherData);
         getForecast(weatherData.name);
-        wind.innerHTML = weatherData.wind.speed + " km/h";
-        humidity.innerHTML = weatherData.main.humidity + "%";
-
-        let weatherMain = weatherData.weather[0].main;
-
-        const weatherImages = {
-            Clouds: "images/clouds.png",
-            Clear: "images/clear.png",
-            Rain: "images/rain.png",
-            Drizzle: "images/drizzle.png",
-            Snow: "images/snow.png",
-            Thunderstorm: "images/rain.png",
-            Mist: "images/mist.png",
-            Haze: "images/mist.png",
-            Fog: "images/mist.png"
-        };
-
-        icon.src = weatherImages[weatherMain] || "images/clear.png";
+        additionalDetails.classList.remove("inactive");
+        forecast.classList.remove("inactive"); 
         iconBox.classList.remove("inactive");
         tempBox.classList.remove("inactive");
         extraDetails.classList.remove("inactive");

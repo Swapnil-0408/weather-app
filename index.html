@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>weather Forecast App</title>
   <link rel="stylesheet"href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,7 +57,24 @@
         </div>
       </div>
     </div>
-    <div class="forecast" id="forecast">
+    <div class="additionalDetails inactive">
+      <div class="detailBox">
+        <div class="emoji">🌡️</div>
+        <h4>Feels Like</h4>
+        <p id="feelsLike">--°C</p>
+      </div>
+      <div class="detailBox">
+        <div class="emoji">🌅</div>
+        <h4>sunrise</h4>
+        <p id="sunrise">--:--</p>
+      </div>
+      <div class="detailBox">
+        <div class="emoji">🌇</div>
+        <h4>sunset</h4>
+        <p id="sunset">--:--</p>
+      </div>
+    </div>
+    <div class="forecast inactive" id="forecast">
       <h3> 5-Day Forecast </h3>
     <div class="forecastcards">
     </div>
