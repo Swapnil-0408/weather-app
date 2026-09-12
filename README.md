@@ -37,7 +37,7 @@ git clone https://github.com/your-username/weather-app.git
 cd weather-app
 3. Open `index.html` in your browse
 ## 🌐 Live Demo
-👉 https://your-username.github.io/weather-app/
+👉 https://swapnil-0408.github.io/weather-app/
 ## 💡 Future Improvements
 
 * 📍 Auto-detect location
