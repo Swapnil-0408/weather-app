@@ -4,6 +4,9 @@ A modern and responsive weather application built using **HTML, CSS, and JavaScr
 🔗 https://swapnil-0408.github.io/weather-app/
 ## 📸 Preview
 <img width="410" height="529" alt="Screenshot 2026-09-12 141527" src="https://github.com/user-attachments/assets/ad84451c-04cd-4fea-8462-975b4ce723ad" />
+<img width="399" height="520" alt="Screenshot 2026-09-12 141558" src="https://github.com/user-attachments/assets/21b5d5cc-58f9-42ac-9f6e-f20051fe4d1d" />
+<img width="394" height="519" alt="Screenshot 2026-09-12 141612" src="https://github.com/user-attachments/assets/0fc23856-33e8-4eb7-8ee1-2888993150bf" />
+
 ## ✨ Features
 - 🔍 Search weather by city name
 - 📍 Get weather using current location
@@ -25,6 +28,7 @@ A modern and responsive weather application built using **HTML, CSS, and JavaScr
 | OpenWeather API | Weather Data |
 | Geolocation API | Current Location Weather |
 | Git & GitHub | Version Control & Hosting |
+
 ## 📂 Project Structure
 weather-app/
 │
@@ -36,6 +40,7 @@ weather-app/
 │   └── images/
 ├── README.md
 └── LICENSE
+
 ## ⚙️ Installation
 
 Clone the repository
